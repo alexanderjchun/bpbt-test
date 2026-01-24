@@ -1,6 +1,6 @@
 import { allPages } from "@/.content-collections/generated";
-import { Color } from "@/components/color";
-import { Header } from "@/components/header";
+import { Color } from "@/components/bobu/color";
+import { Header } from "@/components/bobu/header";
 import { MDXContent } from "@content-collections/mdx/react";
 import { notFound } from "next/navigation";
 

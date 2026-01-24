@@ -1,25 +1,25 @@
 "use client";
 
-import { clamp } from "@/lib/utils";
-import { motion } from "motion/react";
-import Image from "next/image";
-import { useEffect, useRef } from "react";
-import img1 from "../public/1.jpg";
-import img10 from "../public/10.jpg";
-import img11 from "../public/11.jpg";
-import img2 from "../public/2.jpg";
-import img3 from "../public/3.jpg";
-import img4 from "../public/4.jpg";
-import img5 from "../public/5.jpg";
-import img6 from "../public/6.jpg";
-import img7 from "../public/7.jpg";
-import img8 from "../public/8.jpg";
-import img9 from "../public/9.jpg";
 import {
   useActiveArtworkId,
   useFlow,
   useIsGalleryLocked,
-} from "./art-provider";
+} from "@/components/bpbt/art-provider";
+import { clamp } from "@/lib/utils";
+import { motion } from "motion/react";
+import Image from "next/image";
+import { useEffect, useRef } from "react";
+import img1 from "../../public/1.jpg";
+import img10 from "../../public/10.jpg";
+import img11 from "../../public/11.jpg";
+import img2 from "../../public/2.jpg";
+import img3 from "../../public/3.jpg";
+import img4 from "../../public/4.jpg";
+import img5 from "../../public/5.jpg";
+import img6 from "../../public/6.jpg";
+import img7 from "../../public/7.jpg";
+import img8 from "../../public/8.jpg";
+import img9 from "../../public/9.jpg";
 
 const IMAGES = [
   img1,

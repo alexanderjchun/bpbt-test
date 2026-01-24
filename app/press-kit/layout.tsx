@@ -1,4 +1,4 @@
-import FirefliesCanvas from "@/components/fireflies-canvas";
+import FirefliesCanvas from "@/components/bobu/fireflies-canvas";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 

@@ -1,6 +1,6 @@
-import { ArtProvider } from "../components/art-provider";
-import { ArtistDrawer } from "../components/artist-drawer";
-import Gallery from "../components/gallery";
+import { ArtProvider } from "../components/bpbt/art-provider";
+import { ArtistDrawer } from "../components/bpbt/artist-drawer";
+import Gallery from "../components/bpbt/gallery";
 
 export default function Page() {
   return (

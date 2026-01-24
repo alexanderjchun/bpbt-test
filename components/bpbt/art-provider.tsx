@@ -184,56 +184,52 @@ async function executeScan(params: ScanParams): Promise<ScanResult> {
   const chipAddress = preloaded.chipAddress as `0x${string}`;
   const chipPublicKey = preloaded.publicKey;
 
-  // Parallel fetch: nonce + tokenId verification
-  const [nonceResult, tokenIdResult] = await Promise.allSettled([
-    publicClient.readContract({
+  if (signal.aborted) {
+    return { success: false, error: "Cancelled" };
+  }
+
+  // Fetch current nonce
+  let nonce: `0x${string}`;
+  try {
+    nonce = (await publicClient.readContract({
       ...contractConfig,
       functionName: "chipNonce",
       args: [chipAddress],
-    }),
-    publicClient.readContract({
+    })) as `0x${string}`;
+  } catch {
+    return { success: false, error: "Failed to read chip nonce from contract" };
+  }
+
+  if (signal.aborted) {
+    return { success: false, error: "Cancelled" };
+  }
+
+  // Precheck mapping on-chain to fail fast without consuming a signature
+  try {
+    await publicClient.readContract({
       ...contractConfig,
       functionName: "tokenIdFor",
       args: [chipAddress],
-    }),
-  ]);
-
-  if (signal.aborted) {
-    return { success: false, error: "Cancelled" };
-  }
-
-  // Check nonce result
-  if (nonceResult.status === "rejected") {
-    return { success: false, error: "Failed to read chip nonce from contract" };
-  }
-  const nonce = nonceResult.value as `0x${string}`;
-
-  // Check tokenId result (verifies chip is mapped on-chain)
-  if (tokenIdResult.status === "rejected") {
+    });
+  } catch {
     return { success: false, error: "No mapped token for this chip on-chain" };
   }
 
-  // Parallel fetch: block timestamp + chainId
-  const [blockResult, chainIdResult] = await Promise.allSettled([
-    publicClient.getBlock(),
-    publicClient.getChainId(),
-  ]);
+  if (signal.aborted) {
+    return { success: false, error: "Cancelled" };
+  }
+
+  // Use chain time (minus 1s) to avoid future timestamp reverts on-chain
+  const latestBlock = await publicClient.getBlock();
+  const chainNowSec = Number(latestBlock.timestamp);
+  const clientNowSec = Math.floor(Date.now() / 1000);
+  const signatureTimestamp = Math.max(0, Math.min(chainNowSec, clientNowSec) - 1);
 
   if (signal.aborted) {
     return { success: false, error: "Cancelled" };
   }
 
-  if (blockResult.status === "rejected" || chainIdResult.status === "rejected") {
-    return { success: false, error: "Failed to fetch chain data" };
-  }
-
-  const latestBlock = blockResult.value;
-  const chainId = chainIdResult.value;
-
-  // Calculate signature timestamp (use chain time minus 1s to avoid future timestamp reverts)
-  const chainNowSec = Number(latestBlock.timestamp);
-  const clientNowSec = Math.floor(Date.now() / 1000);
-  const signatureTimestamp = Math.max(0, Math.min(chainNowSec, clientNowSec) - 1);
+  const chainId = await publicClient.getChainId();
 
   // Build digest for signing
   const { digest } = buildChipSignatureDigest({

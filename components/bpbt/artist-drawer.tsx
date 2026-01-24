@@ -4,7 +4,14 @@ import {
   useActiveArtworkId,
   useFlow,
   type DrawerView,
-} from "@/components/art-provider";
+} from "@/components/bpbt/art-provider";
+import {
+  AddressEntryView,
+  DefaultView,
+  ErrorView,
+  PendingView,
+  SuccessView,
+} from "@/components/bpbt/views";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -13,13 +20,6 @@ import {
   DrawerDescription,
   DrawerTitle,
 } from "@/components/ui/drawer";
-import {
-  AddressEntryView,
-  DefaultView,
-  ErrorView,
-  PendingView,
-  SuccessView,
-} from "@/components/views";
 import { ARTWORK_META } from "@/lib/artwork.meta";
 
 import { AnimatePresence, motion } from "motion/react";

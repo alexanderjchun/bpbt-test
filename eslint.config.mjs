@@ -30,7 +30,8 @@ const eslintConfig = defineConfig([
       ],
     },
   },
-  globalIgnores([".next/**", "out/**", "build/**", "next-env.d.ts"]),
+  globalIgnores([".next/**", "out/**", "build/**", "next-env.d.ts", "foundry/**", ".content-collections/**"]),
+  // ! TODO: Remove this once we have a better way to ignore the foundry directory
 ]);
 
 export default eslintConfig;

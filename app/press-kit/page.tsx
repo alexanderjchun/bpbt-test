@@ -1,8 +1,8 @@
 "use client";
 
 import { allPages } from "@/.content-collections/generated";
-import { Bobutton } from "@/components/bobutton";
-import Snapshot from "@/components/snapshot";
+import { Bobutton } from "@/components/bobu/bobutton";
+import Snapshot from "@/components/bobu/snapshot";
 
 const orderedPages = [...allPages].sort((a, b) => a.order - b.order);
 
