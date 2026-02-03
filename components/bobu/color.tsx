@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { useCopyToClipboard } from "@/lib/use-copy-to-clipboard";
+import { useCopyToClipboard } from "@/lib/hooks/use-copy-to-clipboard";
 
 export function Color({ hex }: { hex: string }) {
   const [isCopied, copyToClipboard] = useCopyToClipboard();

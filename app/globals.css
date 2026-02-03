@@ -46,7 +46,7 @@
   --radius-4xl: calc(var(--radius) + 16px);
 }
 
-:root {
+/* :root {
   --background: #282737;
   --foreground: #fafafa;
   --card: #111116;
@@ -79,15 +79,49 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: #e5e5e5;
   --sidebar-ring: oklch(0.708 0 0);
+} */
+:root {
+  --background: #e4e2dd;
+  --foreground: #1e1e1f;
+  --card: #ad936e;
+  --card-foreground: #1e1e1f;
+  --popover: #ffffff;
+  --popover-foreground: #000000;
+  --primary: #9795b0;
+  --primary-foreground: #fafafa;
+  --secondary: #ad936e;
+  --secondary-foreground: #fafafa;
+  --muted: #fafafa;
+  --muted-foreground: #1e1e1f;
+  --accent: #b1b0cc;
+  --accent-foreground: #fafafa;
+  --destructive: oklch(0.58 0.22 27);
+  --border: #e4e4e4;
+  --input: #e4e4e4;
+  --ring: #ffffff;
+  --chart-1: oklch(0.79 0.1 275);
+  --chart-2: oklch(0.68 0.16 277);
+  --chart-3: oklch(0.59 0.2 277);
+  --chart-4: oklch(0.51 0.23 277);
+  --chart-5: oklch(0.46 0.21 277);
+  --radius: 0.625rem;
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: oklch(0.51 0.23 277);
+  --sidebar-primary-foreground: oklch(0.96 0.02 272);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: #e5e5e5;
+  --sidebar-ring: oklch(0.708 0 0);
 }
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
-  /* body {
+  body {
     @apply bg-background text-foreground;
-  } */
+  }
 }
 @utility grid-stack {
   display: grid;

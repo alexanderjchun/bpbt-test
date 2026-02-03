@@ -3,6 +3,21 @@
 [DGTL's posts](https://x.com/search?q=from%3Adgtlemissions%20sake%20and%20a%20dream&src=typed_query)
 [The Way of Code](https://www.thewayofcode.com/)
 
+## TODO
+
+- [ ] Finalize content
+  - [ ] Sake and a Dream
+  - [ ] Who is Bobu?
+  - [ ] Proposals
+    - [ ] Overview
+  - [ ] Brand
+- [ ] Get links figure out first
+- [ ] Fix nav
+
+### Sake and a Dream
+
+---
+
 - [x] Go through each file and figure out what needs to be done
   - [x] Skills
     - [x] <https://github.com/trailofbits/skills/tree/main/plugins>
@@ -19,6 +34,9 @@
   - [ ] Refactor components, utils, actions, and fix Vaul
 - [ ] Create files for posts
 - [ ] Remove Foundry out of `.gitignore`
+
+### Bobu
+
 - [ ] About
 - [ ] Proposal form
 - [ ] Feedback form

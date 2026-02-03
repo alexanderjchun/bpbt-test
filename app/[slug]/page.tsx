@@ -1,6 +1,5 @@
 import { allPages } from "@/.content-collections/generated";
 import { Color } from "@/components/bobu/color";
-import { Header } from "@/components/bobu/header";
 import { MDXContent } from "@content-collections/mdx/react";
 import { notFound } from "next/navigation";
 
@@ -19,7 +18,6 @@ export default async function Page(props: PageProps<"/[slug]">) {
   }
   return (
     <main className="mx-auto max-w-7xl space-y-3 p-3">
-      <Header currentPage={slug} />
       <div className="flex gap-1.5 md:gap-3">
         <div className="hidden w-24 sm:block"></div>
         <div className="flex-1 rounded-xl p-4">

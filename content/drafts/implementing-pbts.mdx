@@ -1,0 +1,210 @@
+---
+title: Implementing PBTs
+description: A general approach to implementing PBTs for your product.
+---
+
+## General approach
+
+The process is generally the same whether you have a dozen or thousands of products.
+
+We are going to assume the more difficult case where there are many products and at least three parties involved:
+
+1. Owner
+2. Developer
+3. Manufacturer
+
+If you are taking all three roles, then this process can be reduced significantly.
+
+## Planning
+
+### Purchase an initial set of chips
+
+The chip isn't a simple NFC tag. It must be able to securely generate an asymmetric key pair and sign messages using the generated private key. It's similar to a security key and appears as such when scanned with a phone.
+
+**Arx Research HaLo Chips** meet these requirements and can be purchased from their [store](https://store.arx.org/). Purchase a set of 10 chips to experiment with and use with the developer later.
+
+Learn more in Arx's [documentation](https://docs.arx.org/).
+
+### Discussions with the manufacturer
+
+There are two main topics to discuss with the manufacturer:
+
+1. How the chip will be embedded in the product
+2. How the manufacturer will keep track of products and their embedded chips
+
+#### How the chip will be embedded in the product
+
+The chip should be embedded in a way that is easy to scan, yet difficult to remove or tamper with. This may involve experimentation depending on the product.
+
+<Callout>
+It's valid to embed the chip in a warranty card or other document that is typically
+  included with your type of product. However, instead of the PBT representing the product, the PBT will represent the warranty card.
+
+In that case, the owner of the product could sell the warranty card separately. That may be an acceptable tradeoff depending on how difficult it is to embed the chip vs. how often that instance may occur. For example, warranty cards for luxury watches are common and rarely separated.
+
+</Callout>
+
+#### How the manufacturer will keep track of products and their embedded chips
+
+The manufacturing process will most likely look like this:
+
+1. Chips are sent to the manufacturer
+2. Manufacturer checks for faulty chips using Arx's [HaLo Verify](https://bulk.vrfy.ch/)
+3. Manufacturer embeds the chips
+4. Manufacturer confirms the chips are scannable
+5. At the same time, the manufacturer logs which product has which chip
+6. Manufacturer packages the product
+
+The easiest method for logging is using a shared spreadsheet with the following columns: `#`, `Product Identifier`, `Primary Public Key`, and `Address`:
+
+| #   | Product Identifier | Primary Public Key | Address  |
+| --- | ------------------ | ------------------ | -------- |
+| 1   | ...                | 0xABC123...        | 0x123... |
+| 2   | ...                | 0xDEF456...        | 0x456... |
+| ... | ...                | ...                | ...      |
+
+Before launch, the develop will verify this data before seeding the smart contract.
+
+<Callout>
+  `Primary Public Key` and `Address` have constant character lengths and use a
+  limited range of characters. We can set those constraints in the spreadsheet
+  to help prevent errors and check again before seeding the smart contract.
+
+Furthermore, both `Primary Public Key` and `Address` should be unique and appear
+only once in the spreadsheet. We can limit the possibility of errors by guarding
+invalid entries early.
+
+</Callout>
+
+<Callout type="warning">
+  You may want to preemptively assign chips to products before manufacturing.
+  This is not recommended.
+
+It is much easier to:
+
+1. Send the chips directly to the manufacturer
+2. Verify working chips are in place first
+3. Figuring out which products have which chips
+
+Rather than:
+
+1. Shipping the chips to yourself
+2. Assigning them to products
+3. Creating strict procedures to handle missing or faulty chips
+4. Shipping them to the manufacturer
+5. Track down and handle missing or faulty chips
+
+  </Callout>
+
+### Discussions with the developer
+
+There are four main topics to discuss with the developer:
+
+1. How the PBTs should be represented online
+2. How the metadata will be hosted
+3. Picking a blockchain and getting testnet tokens
+4. Picking an RPC provider
+
+#### How the PBTs should be represented online
+
+PBTs are an extension of NFTs and use the same metadata.
+
+The metadata can be as simple as `name` and `image` or include traits like a typical NFT. Here's an example of [Azuki x Moser #68](https://opensea.io/item/ethereum/0xac901951c17b8d251946b9075e8520083fac708d/68) owned by [Ray](https://www.azuki.com/collector/ray):
+
+  <video
+    src="https://static-content.azuki.com/moser/pbt/water.mp4"
+    autoPlay
+    muted
+    loop
+  />
+  
+```json
+{
+  "name": "Azuki x Moser #68",
+  "description": "1 of 24 Pioneer Centre Seconds – Water, an artifact of *Azuki x Moser: Elements of Time*. Channeling Azuki's intuition, Water carves through even the hardest steel.",
+  "image": "https://static-content.azuki.com/moser/pbt/water.mp4",
+  "attributes": [
+    {
+      "trait_type": "Element",
+      "value": "Water"
+    },
+    {
+      "trait_type": "Variant",
+      "value": "Pioneer Centre Seconds"
+    }
+  ]
+}
+```
+
+Azuki uses a video for the `image` and includes traits in the `attributes` array that reference the brand's story while tying into Azuki's [Collector Status](https://www.azuki.com/blog/collector-status) which enables new features for Ray.
+
+Learn more at [Azuki x H. Moser & Cie](https://h-moser.azuki.com/).
+
+Reference OpenSea's [Metadata Standards](https://docs.opensea.io/docs/metadata-standards) for more information on valid metadata.
+
+#### Hosting the metadata
+
+It's important to host the metadata reliably to avoid embarrassing issues down the line. In the example above, Azuki hosts the metadata on their own CDN. There are many options for hosting the metadata.
+
+The most common are:
+
+1. IPFS via [Pinata](https://pinata.cloud/)
+2. [Cloudflare R2](https://www.cloudflare.com/r2/) or [AWS S3](https://aws.amazon.com/s3/)
+3. Building the metadata into the smart contract
+
+Each have their own tradeoffs. In Azuki's case, they have a development team that they can trust and in this specific case, are using a video for the `image` which may present challenging issues with deliverability if they went with IPFS.
+
+It's not all or nothing. The metadata itself is light and can be onchain with the `image` hosted elsewhere. Blockchain technology is advancing rapidly and migrating towards a new solution can be planned later.
+
+#### Picking a blockchain and getting testnet tokens
+
+The PBT standard was designed for Ethereum, but any EVM-compatible blockchain can be used. Whichever chain you choose, it's important to get enough testnet tokens early for testing.
+
+#### Picking an RPC provider
+
+You'll need an RPC provider to connect to the blockchain. There are many options for RPC providers, but the most common are:
+
+1. [Infura](https://infura.io/)
+2. [Alchemy](https://www.alchemy.com/)
+3. [Blocknative](https://www.blocknative.com/)
+4. [QuickNode](https://www.quicknode.com/)
+
+## Development
+
+### Begin manufacturing
+
+The chips are ordered and there's an agreed procedure to verify that working chips are embedded in the products correctly. Check in with the manufacturer on a regular basis to ensure they're on track.
+
+### Developing the smart contract
+
+The developer will need mock data to work with while the products are manufactured.
+
+Using the chips purchased earlier, create a spreadsheet with the following columns: `#`, `Product Identifier`, `Primary Public Key`, `Address`, `Metadata`, and `Image`.
+
+Use Arx's [HaLo Verify](https://bulk.vrfy.ch/) to scan and log their `Primary Public Key` and `Address` into a spreadsheet.
+
+Your spreadsheet should look like this:
+
+| #   | Product Identifier | Primary Public Key | Address  | Metadata | Image |
+| --- | ------------------ | ------------------ | -------- | -------- | ----- |
+| 1   | ...                | 0xABC123...        | 0x123... |          |       |
+| 2   | ...                | 0xDEF456...        | 0x456... |          |       |
+| ... | ...                | ...                | ...      |          |       |
+
+We can leave the `Metadata` and `Image` columns empty if they're still being decided or we're waiting for a designer to provide the assets.
+
+<Callout>
+  Keep a few chips to test with and send the rest to your developers or order a
+  new set for them if it's easier. Just make sure your chips are in their mock
+  data so you can test remotely with your device.
+</Callout>
+
+### Developing the frontend
+
+## Launch
+
+### Seeding the finalized chip data
+
+### Testing the user flow
+
+### Handling potential issues after launch

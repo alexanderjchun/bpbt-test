@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useKeyPress } from "@/lib/use-key-press";
+import { useKeyPress } from "@/lib/hooks/use-key-press";
 import { cn } from "@/lib/utils";
 import { Button as ButtonPrimitive } from "@base-ui/react/button";
 import Link from "next/link";

@@ -1,0 +1,60 @@
+---
+title: PBT
+description: An open standard for representing physical assets in the digital world.
+---
+
+## References
+
+1. [Discussion](https://ethereum-magicians.org/t/physical-backed-tokens/11350)
+2. [Website](https://www.pbt.io/)
+3. [Proof of Skate](https://www.azuki.com/blog/proof-of-skate)
+4. [Azuki x SATOSHI NAKAMOTO](https://x.com/2pmflow/status/1793326658369237402)
+5. [GitHub Repository](https://github.com/chiru-labs/PBT)
+6. [Announcement](https://www.azuki.com/blog/pbt)
+
+## What are PBTs?
+
+PBTs are a way to represent ownership of physical assets online by embedding a chip into the asset.
+
+## How do PBTs work?
+
+1. A chip is embedded into a physical asset
+2. Users scan the chip with their phone to claim ownership
+3. An onchain record is updated for anyone to verify
+
+## Why use PBTs?
+
+PBTs are useful when users value authenticity.
+
+For example, a luxury watch manufacturer with an online community of collectors can implement the PBT standard to:
+
+- Make it difficult for counterfeiters to sell fake watches
+- Disincentivize individuals from pretending to own a watch they don't actually own
+- Analyze transactions in secondary markets
+- Create novel product experiences
+
+The PBT standard is open. Anyone can implement it for their own products in whatever way they see fit.
+
+Learn more in the [ERC-5791 specification](https://eips.ethereum.org/EIPS/eip-5791).
+
+## Should I use PBTs?
+
+PBTs add an extra layer of complexity. A simple implementation for a few dozen products is straightforward to manage, but at scale, it can be difficult to keep track of all the chips and have different teams work in parallel.
+
+A few considerations:
+
+- **Cost:** As of November 2025, Arx Research is the only manufacturer of valid chips. A set of 10 of their HaLo chips cost around $200. You can contact them for reduced pricing. A high volume order at a 25% discount would be approximately $15 per chip.
+- **Manufacturing:** Chips should be embedded in a way that is easy to scan, yet difficult to remove or tamper with. This will require discussions with your manufacturer if you're not manufacturing the product yourself.
+- **Hosting:** The metadata for your PBTs need to be hosted reliably for the foreseeable future.
+
+Questions to ask:
+
+1. "Is my product valuable enough to justify the added cost of chips?"
+2. "Can I or my manufacturer embed the chips in my product properly?"
+3. "Do I have a way to host the metadata for my PBTs reliably?"
+
+Most importantly, **"Is my use case worth the added complexity of PBTs?"**
+
+If you answer yes to all of these questions, then PBTs are a good fit for your product.
+
+If you're not sure, the rest of this documentation covers these topics in more detail for you to make an informed decision.

@@ -5,4 +5,4 @@ ignoredBuiltDependencies:
   - unrs-resolver
 
 # Minimum age of a release in minutes to mitigate npm supply chain attacks.
-minimumReleaseAge: 1440
+# minimumReleaseAge: 1440

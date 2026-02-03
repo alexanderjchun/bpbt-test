@@ -1,33 +1,18 @@
 
 export default [
   {
-    "slug": "bobu-2026",
-    "date": "2026-01-01",
-    "title": "Bobu 2026",
-    "summary": "New year, new Bobu.",
-    "content": "## Happy New Year",
+    "slug": "who-is-bobu",
+    "date": "",
+    "title": "Who is Bobu?",
+    "summary": "Meet Bobu.",
+    "content": "## Bobu the Bean Farmer\n\nBobu is a reoccurring character in the Azuki universe. He appears in the third episode of the Azuki Anthology Series and is featured as a Leader card in the Azuki Trading Card Game.\n\n### Personality\n\nBobu is generally viewed as laidback, wise, and an enjoyer of sake.\n\n## The Bobu Experiment\n\n### Mission\n\nPush the boundaries of intellectual property and brand building through Bobu.\n\n## The Bobu Collective\n\nThe Bobu Collective is a subset of the Azuki community driving the Bobu Experiment.\n\n### The Bobu Committee\n\n### Treasury\n\n### Proposals",
     "_meta": {
-      "filePath": "bobu-2026.mdx",
-      "fileName": "bobu-2026.mdx",
+      "filePath": "overview.mdx",
+      "fileName": "overview.mdx",
       "directory": ".",
       "extension": "mdx",
-      "path": "bobu-2026"
+      "path": "overview"
     },
-    "mdx": "var Component=(()=>{var h=Object.create;var r=Object.defineProperty;var _=Object.getOwnPropertyDescriptor;var d=Object.getOwnPropertyNames;var f=Object.getPrototypeOf,p=Object.prototype.hasOwnProperty;var j=(n,t)=>()=>(t||n((t={exports:{}}).exports,t),t.exports),l=(n,t)=>{for(var e in t)r(n,e,{get:t[e],enumerable:!0})},s=(n,t,e,a)=>{if(t&&typeof t==\"object\"||typeof t==\"function\")for(let o of d(t))!p.call(n,o)&&o!==e&&r(n,o,{get:()=>t[o],enumerable:!(a=_(t,o))||a.enumerable});return n};var M=(n,t,e)=>(e=n!=null?h(f(n)):{},s(t||!n||!n.__esModule?r(e,\"default\",{value:n,enumerable:!0}):e,n)),w=n=>s(r({},\"__esModule\",{value:!0}),n);var i=j((D,u)=>{u.exports=_jsx_runtime});var y={};l(y,{default:()=>x});var c=M(i());function m(n){let t={h2:\"h2\",...n.components};return(0,c.jsx)(t.h2,{children:\"Happy New Year\"})}function x(n={}){let{wrapper:t}=n.components||{};return t?(0,c.jsx)(t,{...n,children:(0,c.jsx)(m,{...n})}):m(n)}return w(y);})();\n;return Component;"
-  },
-  {
-    "slug": "we-are-bobu",
-    "date": "2026-01-02",
-    "title": "We are Bobu",
-    "summary": "BOBU BOBU BOBU",
-    "content": "## We are Bobu",
-    "_meta": {
-      "filePath": "we-are-bobu.mdx",
-      "fileName": "we-are-bobu.mdx",
-      "directory": ".",
-      "extension": "mdx",
-      "path": "we-are-bobu"
-    },
-    "mdx": "var Component=(()=>{var h=Object.create;var r=Object.defineProperty;var _=Object.getOwnPropertyDescriptor;var d=Object.getOwnPropertyNames;var f=Object.getPrototypeOf,j=Object.prototype.hasOwnProperty;var l=(n,t)=>()=>(t||n((t={exports:{}}).exports,t),t.exports),M=(n,t)=>{for(var e in t)r(n,e,{get:t[e],enumerable:!0})},s=(n,t,e,u)=>{if(t&&typeof t==\"object\"||typeof t==\"function\")for(let o of d(t))!j.call(n,o)&&o!==e&&r(n,o,{get:()=>t[o],enumerable:!(u=_(t,o))||u.enumerable});return n};var p=(n,t,e)=>(e=n!=null?h(f(n)):{},s(t||!n||!n.__esModule?r(e,\"default\",{value:n,enumerable:!0}):e,n)),C=n=>s(r({},\"__esModule\",{value:!0}),n);var i=l((b,a)=>{a.exports=_jsx_runtime});var D={};M(D,{default:()=>x});var c=p(i());function m(n){let t={h2:\"h2\",...n.components};return(0,c.jsx)(t.h2,{children:\"We are Bobu\"})}function x(n={}){let{wrapper:t}=n.components||{};return t?(0,c.jsx)(t,{...n,children:(0,c.jsx)(m,{...n})}):m(n)}return C(D);})();\n;return Component;"
+    "mdx": "var Component=(()=>{var l=Object.create;var h=Object.defineProperty;var m=Object.getOwnPropertyDescriptor;var p=Object.getOwnPropertyNames;var b=Object.getPrototypeOf,x=Object.prototype.hasOwnProperty;var B=(n,e)=>()=>(e||n((e={exports:{}}).exports,e),e.exports),f=(n,e)=>{for(var i in e)h(n,i,{get:e[i],enumerable:!0})},a=(n,e,i,o)=>{if(e&&typeof e==\"object\"||typeof e==\"function\")for(let t of p(e))!x.call(n,t)&&t!==i&&h(n,t,{get:()=>e[t],enumerable:!(o=m(e,t))||o.enumerable});return n};var g=(n,e,i)=>(i=n!=null?l(b(n)):{},a(e||!n||!n.__esModule?h(i,\"default\",{value:n,enumerable:!0}):i,n)),y=n=>a(h({},\"__esModule\",{value:!0}),n);var c=B((k,s)=>{s.exports=_jsx_runtime});var _={};f(_,{default:()=>u});var r=g(c());function d(n){let e={h2:\"h2\",h3:\"h3\",p:\"p\",...n.components};return(0,r.jsxs)(r.Fragment,{children:[(0,r.jsx)(e.h2,{children:\"Bobu the Bean Farmer\"}),`\n`,(0,r.jsx)(e.p,{children:\"Bobu is a reoccurring character in the Azuki universe. He appears in the third episode of the Azuki Anthology Series and is featured as a Leader card in the Azuki Trading Card Game.\"}),`\n`,(0,r.jsx)(e.h3,{children:\"Personality\"}),`\n`,(0,r.jsx)(e.p,{children:\"Bobu is generally viewed as laidback, wise, and an enjoyer of sake.\"}),`\n`,(0,r.jsx)(e.h2,{children:\"The Bobu Experiment\"}),`\n`,(0,r.jsx)(e.h3,{children:\"Mission\"}),`\n`,(0,r.jsx)(e.p,{children:\"Push the boundaries of intellectual property and brand building through Bobu.\"}),`\n`,(0,r.jsx)(e.h2,{children:\"The Bobu Collective\"}),`\n`,(0,r.jsx)(e.p,{children:\"The Bobu Collective is a subset of the Azuki community driving the Bobu Experiment.\"}),`\n`,(0,r.jsx)(e.h3,{children:\"The Bobu Committee\"}),`\n`,(0,r.jsx)(e.h3,{children:\"Treasury\"}),`\n`,(0,r.jsx)(e.h3,{children:\"Proposals\"})]})}function u(n={}){let{wrapper:e}=n.components||{};return e?(0,r.jsx)(e,{...n,children:(0,r.jsx)(d,{...n})}):d(n)}return y(_);})();\n;return Component;"
   }
 ]
