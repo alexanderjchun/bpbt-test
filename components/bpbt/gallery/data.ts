@@ -1,12 +1,24 @@
+import type { StaticImageData } from "next/image";
+
+import theGreatSakeWave from "@/public/art/the-great-sake-wave.jpg";
+import aToastToTheBirthOfDreams from "@/public/art/a-toast-to-the-birth-of-dreams.jpg";
+import firefliesAndBottles from "@/public/art/fireflies-and-bottles.jpg";
+import flowerBirdsWindMoon from "@/public/art/flower-birds-wind-moon.jpg";
+import oneForAll from "@/public/art/one-for-all.jpg";
+import photosyntheticBeats from "@/public/art/photosynthetic-beats.jpg";
+import takeThePhantomOfIdeals from "@/public/art/take-the-phantom-of-ideals.jpg";
+import sipWithMe from "@/public/art/sip-with-me-ill-take-you-to-another-world.jpg";
+import sakeAndDream from "@/public/art/sake-and-dream.jpg";
+import sixDirections from "@/public/art/six-directions.jpg";
+import bobuTown from "@/public/art/bobu-town.jpg";
+
 export type ArtworkMeta = {
   id: number;
   title: string;
   artist: string;
   url: string;
   pfp: string;
-  image: string;
-  width: number;
-  height: number;
+  image: StaticImageData;
 };
 
 export const ARTWORK: ArtworkMeta[] = [
@@ -16,9 +28,7 @@ export const ARTWORK: ArtworkMeta[] = [
     artist: "Yuka",
     url: "https://x.com/kamogawayuka",
     pfp: "/artists/yuka.png",
-    image: "/art/the-great-sake-wave.jpg",
-    width: 1024,
-    height: 1324,
+    image: theGreatSakeWave,
   },
   {
     id: 2,
@@ -26,9 +36,7 @@ export const ARTWORK: ArtworkMeta[] = [
     artist: "SUKIzweetsm",
     url: "https://x.com/sukizweetsm_eth",
     pfp: "/artists/sukizweetsm.png",
-    image: "/art/a-toast-to-the-birth-of-dreams.jpg",
-    width: 1024,
-    height: 1429,
+    image: aToastToTheBirthOfDreams,
   },
   {
     id: 3,
@@ -36,9 +44,7 @@ export const ARTWORK: ArtworkMeta[] = [
     artist: "Willem",
     url: "https://x.com/WJHoeffnagel",
     pfp: "/artists/willem.png",
-    image: "/art/fireflies-and-bottles.jpg",
-    width: 1024,
-    height: 1372,
+    image: firefliesAndBottles,
   },
   {
     id: 4,
@@ -46,9 +52,7 @@ export const ARTWORK: ArtworkMeta[] = [
     artist: "YQ",
     url: "https://x.com/YQCre8",
     pfp: "/artists/yq.png",
-    image: "/art/flower-birds-wind-moon.jpg",
-    width: 1024,
-    height: 1287,
+    image: flowerBirdsWindMoon,
   },
   {
     id: 5,
@@ -56,9 +60,7 @@ export const ARTWORK: ArtworkMeta[] = [
     artist: "Kat Pichik",
     url: "https://x.com/katpichik",
     pfp: "/artists/kat-pichik.png",
-    image: "/art/one-for-all.jpg",
-    width: 1024,
-    height: 2098,
+    image: oneForAll,
   },
   {
     id: 6,
@@ -66,9 +68,7 @@ export const ARTWORK: ArtworkMeta[] = [
     artist: "Jonathon Downing",
     url: "https://x.com/propaintpusher",
     pfp: "/artists/jonathon-downing.png",
-    image: "/art/photosynthetic-beats.jpg",
-    width: 1024,
-    height: 1442,
+    image: photosyntheticBeats,
   },
   {
     id: 7,
@@ -76,9 +76,7 @@ export const ARTWORK: ArtworkMeta[] = [
     artist: "TAKE",
     url: "https://x.com/TAKE_N1i",
     pfp: "/artists/take.png",
-    image: "/art/take-the-phantom-of-ideals.jpg",
-    width: 1024,
-    height: 1201,
+    image: takeThePhantomOfIdeals,
   },
   {
     id: 8,
@@ -86,9 +84,7 @@ export const ARTWORK: ArtworkMeta[] = [
     artist: "SUKIzweetsm",
     url: "https://x.com/sukizweetsm_eth",
     pfp: "/artists/sukizweetsm.png",
-    image: "/art/sip-with-me-ill-take-you-to-another-world.jpg",
-    width: 1024,
-    height: 1438,
+    image: sipWithMe,
   },
   {
     id: 9,
@@ -96,9 +92,7 @@ export const ARTWORK: ArtworkMeta[] = [
     artist: "Ellie Kayu Ng",
     url: "https://www.elliekayu.com/",
     pfp: "/artists/ellie-kayu-ng.png",
-    image: "/art/sake-and-dream.jpg",
-    width: 1024,
-    height: 2048,
+    image: sakeAndDream,
   },
   {
     id: 10,
@@ -106,9 +100,7 @@ export const ARTWORK: ArtworkMeta[] = [
     artist: "Timon YC I",
     url: "https://timonii.com/",
     pfp: "/artists/timon-yc-i.png",
-    image: "/art/six-directions.jpg",
-    width: 1548,
-    height: 1024,
+    image: sixDirections,
   },
   {
     id: 11,
@@ -116,8 +108,6 @@ export const ARTWORK: ArtworkMeta[] = [
     artist: "Yapable",
     url: "https://x.com/Joshuayapable",
     pfp: "/artists/yapable.png",
-    image: "/art/bobu-town.jpg",
-    width: 1366,
-    height: 1024,
+    image: bobuTown,
   },
 ];

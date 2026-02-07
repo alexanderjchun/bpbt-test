@@ -137,9 +137,7 @@ export function AddressForm({ onResolved, onClear }: AddressFormProps) {
 
           // Only validate eagerly if it looks complete
           const v = nextValue.trim();
-          const isEagerCase =
-            isAddress(v) ||
-            v.toLowerCase().endsWith(".eth");
+          const isEagerCase = isAddress(v) || v.toLowerCase().endsWith(".eth");
 
           if (!isEagerCase) return;
 
@@ -171,8 +169,8 @@ export function AddressForm({ onResolved, onClear }: AddressFormProps) {
             void runValidation(value, "enter");
           }
         }}
-        placeholder="0x... or .eth"
-        className="h-12 rounded-none text-base font-light"
+        placeholder="Enter wallet address or .eth"
+        className="h-12 rounded-none text-base font-light placeholder:text-white"
         aria-busy={isValidating}
         aria-invalid={isTouched && !!error}
       />

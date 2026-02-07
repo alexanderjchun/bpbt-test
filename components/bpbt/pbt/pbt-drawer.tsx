@@ -71,17 +71,13 @@ export function PBTDrawer() {
       open={isOpen}
       onOpenChange={handleOpenChange}
     >
-      <DrawerContent className="fixed bottom-4 left-4 z-10 max-w-80 overflow-hidden rounded-4xl bg-black outline-hidden">
+      <DrawerContent className="mx-auto mb-4 max-w-80 overflow-hidden rounded-4xl bg-black outline-hidden [--initial-transform:calc(100%+1rem)] sm:m-4">
         <DrawerTitle className="sr-only">{artwork.title}</DrawerTitle>
         <DrawerDescription className="sr-only">
           By {artwork.artist}
         </DrawerDescription>
         <AnimateHeight>
-          <AnimatePresence
-            initial={false}
-            mode="popLayout"
-            custom={renderView}
-          >
+          <AnimatePresence initial={false} mode="popLayout" custom={renderView}>
             <motion.div
               initial={{ opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}

@@ -127,9 +127,7 @@ export function ArtGallery() {
               src={artwork.image}
               className="user-drag-none touch-callout-none pointer-events-none size-full object-contain px-1 py-8 ease-in-out"
               sizes="100vw"
-              width={artwork.width}
-              height={artwork.height}
-              unoptimized
+              placeholder="blur"
               priority={index === 0}
             />
           </motion.div>
