@@ -34,8 +34,8 @@ export type ChipJsonEntry = {
   pkey?: string;
 };
 
-import devChips from "../../../foundry/data/chip_data.json";
-import prodChips from "../../../foundry/data/chip_data_prod.json";
+import devChips from "./chip_data.json";
+import prodChips from "./chip_data_prod.json";
 
 function selectSource(): { chips: ChipJsonEntry[] } {
   return process.env.NODE_ENV === "development"

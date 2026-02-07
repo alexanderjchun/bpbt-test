@@ -1,0 +1,12 @@
+{
+  "chips": [
+    {
+      "tokenId": 1,
+      "chipAddress": "0x20430eE3F71B6ae60Befdb4cd6108e5F37F14CB2"
+    },
+    {
+      "tokenId": 2,
+      "chipAddress": "0x38A8f6EB0c27346a2Af1C84A815EC5A5617f926F"
+    }
+  ]
+}

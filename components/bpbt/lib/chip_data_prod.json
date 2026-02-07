@@ -1,0 +1,48 @@
+{
+  "chips": [
+    {
+      "tokenId": 1,
+      "chipAddress": "0xAD626D78404870BC9FDA3D6Db64bCEDAEe45ce95"
+    },
+    {
+      "tokenId": 2,
+      "chipAddress": "0xec9e1c29eb15ebA119E3Ba16f8f952738fA9c1EF"
+    },
+    {
+      "tokenId": 3,
+      "chipAddress": "0xD14aB161EC0E54522872504e46F0891FE45dbc7d"
+    },
+    {
+      "tokenId": 4,
+      "chipAddress": "0x309Bfef54b92273E0FD41e4c00517fFB881d62B8"
+    },
+    {
+      "tokenId": 5,
+      "chipAddress": "0xE8A144496D6324a9f4cBb42a8C18cAA32CCC5e7a"
+    },
+    {
+      "tokenId": 6,
+      "chipAddress": "0x2F002f704369e96880281E95D2E04273C9c6B256"
+    },
+    {
+      "tokenId": 7,
+      "chipAddress": "0x46848248EE7a847c936541Ba2110b985DC0F9C39"
+    },
+    {
+      "tokenId": 8,
+      "chipAddress": "0x8c092217750Ab13fA0e9AE92270C7BF8e4A165C0"
+    },
+    {
+      "tokenId": 9,
+      "chipAddress": "0x323F4050fFe40B68838B9D048F864e1A77F9c4B4"
+    },
+    {
+      "tokenId": 10,
+      "chipAddress": "0x953dEf231F7dC9114A4416732FA3911bC9eA309C"
+    },
+    {
+      "tokenId": 11,
+      "chipAddress": "0xEE4E35A9b59658Cf7F156C8e9bA7CdEdd71D5244"
+    }
+  ]
+}
