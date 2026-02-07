@@ -28,7 +28,7 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="h-svh overflow-hidden">
+    <main className="">
       {!ready ? (
         <ViewTransition>
           <div className="pointer-events-none fixed inset-0 flex items-center justify-center">
@@ -37,15 +37,15 @@ export default function Home() {
         </ViewTransition>
       ) : (
         <ViewTransition>
-          <div className="grid size-full grid-cols-1 grid-rows-5 px-8">
+          <div className="grid size-full grid-cols-1 grid-rows-5 lg:grid-cols-2">
             <Image
-              className="animate-float col-span-1 row-span-4 aspect-square size-full rotate-3 place-self-stretch object-contain object-[100%_50%] blur-md"
+              className="animate-float col-span-1 row-span-4 aspect-square size-full place-self-stretch object-contain object-[100%_50%] blur-md lg:col-start-2 lg:row-span-full lg:object-cover lg:object-[50%_60%]"
               src="/art/sake-and-a-dream.png"
               alt="Sake and a Dream"
               width={215}
               height={288}
             />
-            <div className="col-span-1 row-span-1 space-y-3">
+            <div className="col-span-1 row-span-1 space-y-3 p-4 lg:row-span-full lg:self-end">
               <h1 className="text-6xl leading-none uppercase lg:text-[min(8.5vw,128px)]/[1]">
                 <span className="tracking-tighter">Sake and</span>
                 <br /> a Dream
