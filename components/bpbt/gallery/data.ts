@@ -12,16 +12,6 @@ export type ArtworkMeta = {
 export const ARTWORK: ArtworkMeta[] = [
   {
     id: 1,
-    title: "Sake and a Dream",
-    artist: "DGTL",
-    url: "https://x.com/dgtlemissions",
-    pfp: "/artists/dgtl.png",
-    image: "/art/sake-and-a-dream.png",
-    width: 215,
-    height: 288,
-  },
-  {
-    id: 2,
     title: "The Great Sake Wave",
     artist: "Yuka",
     url: "https://x.com/kamogawayuka",
@@ -31,7 +21,7 @@ export const ARTWORK: ArtworkMeta[] = [
     height: 1324,
   },
   {
-    id: 3,
+    id: 2,
     title: "A Toast to the Birth of Dreams",
     artist: "SUKIzweetsm",
     url: "https://x.com/sukizweetsm_eth",
@@ -41,7 +31,7 @@ export const ARTWORK: ArtworkMeta[] = [
     height: 1429,
   },
   {
-    id: 4,
+    id: 3,
     title: "Fireflies and Bottles",
     artist: "Willem",
     url: "https://x.com/WJHoeffnagel",
@@ -51,7 +41,7 @@ export const ARTWORK: ArtworkMeta[] = [
     height: 1372,
   },
   {
-    id: 5,
+    id: 4,
     title: "花鳥風月",
     artist: "YQ",
     url: "https://x.com/YQCre8",
@@ -61,7 +51,7 @@ export const ARTWORK: ArtworkMeta[] = [
     height: 1287,
   },
   {
-    id: 6,
+    id: 5,
     title: "One for All",
     artist: "Kat Pichik",
     url: "https://x.com/katpichik",
@@ -71,7 +61,7 @@ export const ARTWORK: ArtworkMeta[] = [
     height: 2098,
   },
   {
-    id: 7,
+    id: 6,
     title: "Photosynthetic Beats",
     artist: "Jonathon Downing",
     url: "https://x.com/propaintpusher",
@@ -81,7 +71,7 @@ export const ARTWORK: ArtworkMeta[] = [
     height: 1442,
   },
   {
-    id: 8,
+    id: 7,
     title: "TAKE the Phantom of Ideals",
     artist: "TAKE",
     url: "https://x.com/TAKE_N1i",
@@ -91,7 +81,7 @@ export const ARTWORK: ArtworkMeta[] = [
     height: 1201,
   },
   {
-    id: 9,
+    id: 8,
     title: "Sip with Me, I'll Take You to Another World",
     artist: "SUKIzweetsm",
     url: "https://x.com/sukizweetsm_eth",
@@ -101,7 +91,7 @@ export const ARTWORK: ArtworkMeta[] = [
     height: 1438,
   },
   {
-    id: 10,
+    id: 9,
     title: "Sake and Dream",
     artist: "Ellie Kayu Ng",
     url: "https://www.elliekayu.com/",
@@ -111,7 +101,7 @@ export const ARTWORK: ArtworkMeta[] = [
     height: 2048,
   },
   {
-    id: 11,
+    id: 10,
     title: "Six Directions",
     artist: "Timon YC I",
     url: "https://timonii.com/",
@@ -121,7 +111,7 @@ export const ARTWORK: ArtworkMeta[] = [
     height: 1024,
   },
   {
-    id: 12,
+    id: 11,
     title: "Bobu Town",
     artist: "Yapable",
     url: "https://x.com/Joshuayapable",

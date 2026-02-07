@@ -1,6 +1,5 @@
 "use client";
 
-import { ArtProvider } from "@/components/bpbt/context/art-context";
 import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
@@ -55,10 +54,8 @@ export default function Home() {
         </div>
       </div>
 
-      {/* TBD: Other components with their own reveals */}
       {showNextContent && (
-        <ArtProvider>
-          {/* <ArtGallery /> */}
+        <>
           <Image
             data-reveal="in"
             className="absolute inset-0 size-full object-contain blur-md xl:object-[75%_50%]"
@@ -67,33 +64,31 @@ export default function Home() {
             width={215}
             height={288}
           />
-          {/* <ArtistButton /> */}
-          <div
-            data-reveal="in"
-            className="grid size-full content-end px-6 pb-12"
-          >
-            <div className="space-y-3 p-4">
-              <h1 className="text-6xl leading-none uppercase lg:text-[min(8.5vw,128px)]/[1]">
-                <span className="tracking-tighter">Sake and</span>
-                <br /> a Dream
-              </h1>
-              <p className="text-lg">
-                A creative experiment featuring global artists who share a love
-                for anime, sake, and Bobu.
-              </p>
-            </div>
-            <div className="flex gap-2 px-3">
-              <Button>View Gallery</Button>
-              <Button
-                render={<Link href="/who-is-bobu" />}
-                variant="link"
-                nativeButton={false}
-              >
-                Who is Bobu?
-              </Button>
-            </div>
+          <div data-reveal="in" className="grid size-full content-end px-6 pb-12">
+          <div className="space-y-3 p-4">
+            <h1 className="text-6xl leading-none uppercase lg:text-[min(8.5vw,128px)]/[1]">
+              <span className="tracking-tighter">Sake and</span>
+              <br /> a Dream
+            </h1>
+            <p className="text-lg">
+              A creative experiment featuring global artists who share a love
+              for anime, sake, and Bobu.
+            </p>
           </div>
-        </ArtProvider>
+          <div className="flex gap-2 px-3">
+            <Button render={<Link href="/gallery" />} nativeButton={false}>
+              View Gallery
+            </Button>
+            <Button
+              render={<Link href="/who-is-bobu" />}
+              variant="link"
+              nativeButton={false}
+            >
+              Who is Bobu?
+            </Button>
+          </div>
+        </div>
+        </>
       )}
     </main>
   );

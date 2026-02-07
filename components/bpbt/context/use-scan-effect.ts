@@ -1,6 +1,7 @@
 import { useEffect } from "react";
-import type { FlowAction, FlowState } from "./flow";
+import { ARTWORK } from "../gallery/data";
 import { executeScan } from "../lib/scan-executor";
+import type { FlowAction, FlowState } from "./flow";
 
 interface UseScanEffectProps {
   state: FlowState;
@@ -15,10 +16,10 @@ export function useScanEffect({ state, dispatch }: UseScanEffectProps) {
   const scanning = state.nfc.status === "scanning";
   const scanTo = state.nfc.to;
   const scanKind = state.nfc.kind;
-  const artworkId = state.gallery.activeArtworkId;
+  const artworkId = ARTWORK[state.activeIndex]?.id;
 
   useEffect(() => {
-    if (!scanning || !scanTo || !scanKind) return;
+    if (!scanning || !scanTo || !scanKind || artworkId == null) return;
 
     const controller = new AbortController();
 

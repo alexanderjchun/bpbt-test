@@ -9,7 +9,7 @@ import {
 import { AnimatePresence, motion } from "motion/react";
 import { ReactNode, useState } from "react";
 import useMeasure from "react-use-measure";
-import { useFlow } from "../context/art-context";
+import { useActiveArtwork, useFlow } from "../context/art-context";
 import type { DrawerView } from "../context/flow";
 import {
   PBTAddressView,
@@ -23,25 +23,14 @@ import {
 const CONTENT_TRANSITION_DURATION = 0.2;
 const CONTENT_EASE_CURVE = [0.26, 0.08, 0.25, 1] as const;
 
-type OpenSnapshot = { view: DrawerView; height: number };
-
-export interface PBTDrawerProps {
-  title: string;
-  artist: string;
-  url: string;
-}
-
-export function PBTDrawer({ title, artist, url }: PBTDrawerProps) {
+export function PBTDrawer() {
+  const artwork = useActiveArtwork();
   const { state, dispatch } = useFlow();
   const isOpen = state.drawer.isOpen;
   const view = state.drawer.view;
-  const [, bounds] = useMeasure();
 
-  // Track last open state for smooth close animations
-  const [lastOpenSnapshot, setLastOpenSnapshot] = useState<OpenSnapshot>({
-    view: "default",
-    height: 0,
-  });
+  // Track last view for smooth close animations
+  const [lastView, setLastView] = useState<DrawerView>("default");
 
   const setView = (next: DrawerView) =>
     dispatch({ type: "drawer/setView", view: next });
@@ -50,26 +39,19 @@ export function PBTDrawer({ title, artist, url }: PBTDrawerProps) {
     if (open) {
       dispatch({ type: "drawer/open" });
     } else {
-      setLastOpenSnapshot({ view, height: bounds.height });
+      setLastView(view);
       dispatch({ type: "drawer/close" });
     }
   };
 
   // Use current view when open, last captured view when closing
-  const renderView = isOpen ? view : lastOpenSnapshot.view;
+  const renderView = isOpen ? view : lastView;
 
   // Render content based on current view
   const content = (() => {
     switch (renderView) {
       case "default":
-        return (
-          <PBTDefaultView
-            setView={setView}
-            title={title}
-            artist={artist}
-            url={url}
-          />
-        );
+        return <PBTDefaultView setView={setView} />;
       case "transfer":
         return <PBTAddressView setView={setView} kind="transfer" />;
       case "mint":
@@ -90,8 +72,10 @@ export function PBTDrawer({ title, artist, url }: PBTDrawerProps) {
       onOpenChange={handleOpenChange}
     >
       <DrawerContent className="fixed bottom-4 left-4 z-10 max-w-80 overflow-hidden rounded-4xl bg-black outline-hidden">
-        <DrawerTitle className="sr-only">{title}</DrawerTitle>
-        <DrawerDescription className="sr-only">By {artist}</DrawerDescription>
+        <DrawerTitle className="sr-only">{artwork.title}</DrawerTitle>
+        <DrawerDescription className="sr-only">
+          By {artwork.artist}
+        </DrawerDescription>
         <AnimateHeight>
           <AnimatePresence
             initial={false}

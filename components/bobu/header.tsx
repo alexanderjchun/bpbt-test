@@ -1,8 +1,11 @@
-import { allPages } from "@/.content-collections/generated";
 import { Bobutton } from "./bobutton";
 import { SpacebarIcon } from "./spacebar-icon";
 
-const orderedPages = [...allPages].sort((a, b) => a.order - b.order);
+const orderedPages = [
+  { slug: "/", title: "Home", description: "Home" },
+  { slug: "/who-is-bobu", title: "Who is Bobu?", description: "Who is Bobu?" },
+  { slug: "/gallery", title: "Gallery", description: "Gallery" },
+];
 
 export function Header({ currentPage }: { currentPage: string }) {
   const currentIndex = orderedPages.findIndex(

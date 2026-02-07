@@ -6,7 +6,7 @@ import { ChevronLeft, Loader2 } from "lucide-react";
 import { Route } from "next";
 import Link from "next/link";
 import type { DrawerView } from "../context/flow";
-import { useActiveArtworkId, useFlow } from "../context/art-context";
+import { useActiveArtwork, useFlow } from "../context/art-context";
 import { parseError } from "../lib/errors";
 import { useTokenMintStatus } from "../lib/use-token-mint-status";
 import { AddressForm } from "../forms/address-form";
@@ -21,17 +21,11 @@ import {
 
 export function PBTDefaultView({
   setView,
-  title,
-  artist,
-  url,
 }: {
   setView: (view: DrawerView) => void;
-  title: string;
-  artist: string;
-  url: string;
 }) {
-  const artworkId = useActiveArtworkId();
-  const { status: mintStatus } = useTokenMintStatus(artworkId);
+  const artwork = useActiveArtwork();
+  const { status: mintStatus } = useTokenMintStatus(artwork.id);
 
   const isMinted = mintStatus === "minted";
   const isLoading = mintStatus === "loading";
@@ -39,15 +33,15 @@ export function PBTDefaultView({
   return (
     <View>
       <ViewHeader>
-        <ViewHeading>{title}</ViewHeading>
+        <ViewHeading>{artwork.title}</ViewHeading>
         <p>
           By{" "}
           <Link
-            href={url as Route}
+            href={artwork.url as Route}
             className="underline underline-offset-2"
             target="_blank"
           >
-            {artist}
+            {artwork.artist}
           </Link>
         </p>
         <Separator className="my-3" />
@@ -101,8 +95,8 @@ export function PBTAddressView({
   kind: "mint" | "transfer";
 }) {
   const { state, dispatch } = useFlow();
-  const artworkId = useActiveArtworkId();
-  const { status: mintStatus } = useTokenMintStatus(artworkId);
+  const artwork = useActiveArtwork();
+  const { status: mintStatus } = useTokenMintStatus(artwork.id);
 
   const isMint = kind === "mint";
   const isMinted = mintStatus === "minted";

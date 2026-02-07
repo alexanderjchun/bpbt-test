@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, use, useReducer } from "react";
+import { ARTWORK } from "../gallery/data";
 import { flowReducer, initialState, type FlowContextValue } from "./flow";
 import { useScanEffect } from "./use-scan-effect";
 
@@ -33,8 +34,13 @@ export function useFlow() {
   return use(FlowContext);
 }
 
-export function useActiveArtworkId() {
-  return use(FlowContext).state.gallery.activeArtworkId;
+export function useActiveIndex() {
+  return use(FlowContext).state.activeIndex;
+}
+
+export function useActiveArtwork() {
+  const index = use(FlowContext).state.activeIndex;
+  return ARTWORK[index]!;
 }
 
 export function useIsGalleryLocked() {

@@ -5,5 +5,6 @@ export function baseOptions(): BaseLayoutProps {
     nav: {
       title: "Sake and a Dream",
     },
+    themeSwitch: { enabled: false },
   };
 }

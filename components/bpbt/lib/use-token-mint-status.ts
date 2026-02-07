@@ -1,11 +1,9 @@
+"use client";
+
 /**
  * Hook to check if a token is minted on-chain.
  * Uses ERC721's ownerOf which reverts if token doesn't exist.
  */
-
-// TODO: Consider using TanStack Query to handle error states and reconsider user flow in general because this is kind of retarded. Data fetching should definitely be separate from the UI. Consider what specifically should be isolated in the PBT component.
-
-"use client";
 
 import { useEffect, useState } from "react";
 import { contractConfig, publicClient } from "./viem";
@@ -19,7 +17,9 @@ interface TokenMintStatusResult {
 export function useTokenMintStatus(tokenId: number): TokenMintStatusResult {
   const [status, setStatus] = useState<MintStatus>("loading");
 
-  const fetchStatus = () => {
+  useEffect(() => {
+    setStatus("loading");
+
     publicClient
       .readContract({
         ...contractConfig,
@@ -33,11 +33,7 @@ export function useTokenMintStatus(tokenId: number): TokenMintStatusResult {
         // ownerOf reverts for non-existent tokens (ERC721 standard)
         setStatus("unminted");
       });
-  };
-
-  useEffect(() => {
-    fetchStatus();
-  });
+  }, [tokenId]);
 
   return { status };
 }

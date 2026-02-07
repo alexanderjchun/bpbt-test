@@ -6,10 +6,6 @@ export type DrawerView =
   | "error"
   | "success";
 
-export type GalleryState = {
-  activeArtworkId: number;
-};
-
 export type DrawerState = {
   isOpen: boolean;
   view: DrawerView;
@@ -35,7 +31,7 @@ export type TxState = {
 };
 
 export type FlowState = {
-  gallery: GalleryState;
+  activeIndex: number;
   drawer: DrawerState;
   address: AddressState;
   nfc: NfcState;
@@ -43,7 +39,7 @@ export type FlowState = {
 };
 
 export type FlowAction =
-  | { type: "gallery/setActiveArtworkId"; id: number }
+  | { type: "gallery/setIndex"; index: number }
   | { type: "drawer/open" }
   | { type: "drawer/close" }
   | { type: "drawer/setView"; view: DrawerView }
@@ -65,7 +61,7 @@ export type FlowContextValue = {
 };
 
 export const initialState: FlowState = {
-  gallery: { activeArtworkId: 0 },
+  activeIndex: 0,
   drawer: { isOpen: false, view: "default" },
   address: {},
   nfc: { status: "idle" },
@@ -74,8 +70,8 @@ export const initialState: FlowState = {
 
 export function flowReducer(state: FlowState, action: FlowAction): FlowState {
   switch (action.type) {
-    case "gallery/setActiveArtworkId":
-      return { ...state, gallery: { activeArtworkId: action.id } };
+    case "gallery/setIndex":
+      return { ...state, activeIndex: action.index };
     case "drawer/open":
       return { ...state, drawer: { ...state.drawer, isOpen: true } };
     case "drawer/close":
@@ -126,7 +122,7 @@ export function flowReducer(state: FlowState, action: FlowAction): FlowState {
     case "tx/reset":
       return { ...state, tx: { status: "idle" } };
     case "flow/reset":
-      return initialState;
+      return { ...initialState, activeIndex: state.activeIndex };
     default:
       return state;
   }

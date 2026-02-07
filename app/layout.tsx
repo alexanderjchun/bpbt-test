@@ -113,7 +113,13 @@ export default function RootLayout({
       <body
         className={`${fontSans.variable} flex min-h-screen flex-col font-sans antialiased`}
       >
-        <RootProvider>{children}</RootProvider>
+        <RootProvider
+          theme={{
+            enableSystem: false,
+          }}
+        >
+          {children}
+        </RootProvider>
       </body>
     </html>
   );

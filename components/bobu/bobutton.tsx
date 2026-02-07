@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useKeyPress } from "@/lib/hooks/use-key-press";
 import { cn } from "@/lib/utils";
 import { Button as ButtonPrimitive } from "@base-ui/react/button";
+import { Route } from "next";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -27,11 +28,11 @@ export function Bobutton({
     setTimeout(() => {
       setPressed(false);
     }, 200);
-    router.push(`/${slug}`);
+    router.push(`/${slug}` as Route);
   });
   return (
     <Button
-      render={<Link href={`/${slug}`} />}
+      render={<Link href={`/${slug}` as Route} />}
       nativeButton={false}
       variant="bobu"
       className={className}

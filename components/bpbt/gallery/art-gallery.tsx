@@ -1,7 +1,7 @@
 "use client";
 
 import {
-  useActiveArtworkId,
+  useActiveIndex,
   useFlow,
   useIsGalleryLocked,
 } from "@/components/bpbt/context/art-context";
@@ -9,7 +9,8 @@ import { ARTWORK } from "@/components/bpbt/gallery/data";
 import { clamp } from "@/lib/utils";
 import { motion } from "motion/react";
 import Image from "next/image";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
+import { useScrollLock } from "./use-scroll-lock";
 
 const LENGTH = ARTWORK.length - 1;
 const SNAP_DISTANCE = 50;
@@ -18,54 +19,19 @@ const FRAMES_VISIBLE_LENGTH = 1;
 
 export function ArtGallery() {
   const { dispatch } = useFlow();
-  const activeArtworkId = useActiveArtworkId();
+  const activeIndex = useActiveIndex();
   const isLocked = useIsGalleryLocked();
-  const containerRef = useRef<HTMLDivElement | null>(null);
   const wheelAccumRef = useRef(0);
   const touchStartYRef = useRef<number | null>(null);
 
-  useEffect(() => {
-    const html = document.documentElement;
-    const body = document.body;
-    const prevHtmlOverflow = html.style.overflow;
-    const prevBodyOverflow = body.style.overflow;
-    const prevHtmlOverscroll = (
-      html.style as unknown as { overscrollBehavior?: string }
-    ).overscrollBehavior;
-    const prevBodyOverscroll = (
-      body.style as unknown as { overscrollBehavior?: string }
-    ).overscrollBehavior;
+  useScrollLock();
 
-    html.style.overflow = "hidden";
-    body.style.overflow = "hidden";
-    (
-      html.style as unknown as { overscrollBehavior?: string }
-    ).overscrollBehavior = "contain";
-    (
-      body.style as unknown as { overscrollBehavior?: string }
-    ).overscrollBehavior = "contain";
-
-    return () => {
-      html.style.overflow = prevHtmlOverflow;
-      body.style.overflow = prevBodyOverflow;
-      (
-        html.style as unknown as { overscrollBehavior?: string }
-      ).overscrollBehavior = prevHtmlOverscroll;
-      (
-        body.style as unknown as { overscrollBehavior?: string }
-      ).overscrollBehavior = prevBodyOverscroll;
-    };
-  }, []);
-
-  const activeIndex = clamp(activeArtworkId - 1, [0, LENGTH]);
-
-  const setActiveIndex = (nextIndex: number) => {
-    const nextId = clamp(nextIndex, [0, LENGTH]) + 1;
-    dispatch({ type: "gallery/setActiveArtworkId", id: nextId });
+  const setIndex = (next: number) => {
+    dispatch({ type: "gallery/setIndex", index: clamp(next, [0, LENGTH]) });
   };
 
   const stepBy = (steps: number) => {
-    setActiveIndex(activeIndex + steps);
+    setIndex(activeIndex + steps);
   };
 
   const onWheel = (e: React.WheelEvent<HTMLDivElement>) => {
@@ -110,7 +76,6 @@ export function ArtGallery() {
 
   return (
     <div
-      ref={containerRef}
       className="translate-center grid-stack touch-callout-none tap-highlight-transparent fixed mx-auto h-[svh] w-full max-w-480 overflow-hidden select-none"
       onWheel={onWheel}
       onTouchStart={onTouchStart}
@@ -165,7 +130,7 @@ export function ArtGallery() {
               width={artwork.width}
               height={artwork.height}
               unoptimized
-              priority
+              priority={index === 0}
             />
           </motion.div>
         );
