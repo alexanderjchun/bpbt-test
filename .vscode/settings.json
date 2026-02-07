@@ -2,4 +2,7 @@
   "workbench.colorCustomizations": {
     "titleBar.activeBackground": "#343440"
   },
+  "typescript.preferences.autoImportFileExcludePatterns": [
+    "@base-ui/react/*"
+  ]
 }

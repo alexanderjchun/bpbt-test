@@ -1,7 +1,8 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
-@import "./prose.css";
+@import "fumadocs-ui/css/neutral.css";
+@import "fumadocs-ui/css/preset.css";
 
 @theme inline {
   --color-background: var(--background);
@@ -130,15 +131,8 @@
     grid-area: 1 / 1;
   }
 }
-@utility display {
-  line-height: 1;
-  text-transform: uppercase;
-}
-@utility pixelated {
-  image-rendering: pixelated;
-}
 
-/* Match the background of the body and overscroll */
+/* Match the background of the body and overscroll START */
 
 :root {
   --body-background: #ffffff;
@@ -153,7 +147,14 @@
   z-index: -1;
 }
 
-/*  */
+/* Match the background of the body and overscroll END */
+@utility display {
+  line-height: 1;
+  text-transform: uppercase;
+}
+@utility pixelated {
+  image-rendering: pixelated;
+}
 
 @utility translate-center {
   left: 50%;
