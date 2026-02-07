@@ -1,30 +1,3 @@
-/* Reveal system */
-[data-reveal="in"] {
-  animation: fade-in 1s forwards;
-}
-
-[data-reveal="out"] {
-  animation: fade-out 1s forwards;
-}
-
-@keyframes reveal {
-  from {
-    clip-path: inset(0 0 100% 0);
-  }
-  to {
-    clip-path: inset(0 0 0 0);
-  }
-}
-
-@keyframes unreveal {
-  from {
-    clip-path: inset(0 0 0 0);
-  }
-  to {
-    clip-path: inset(0 0 100% 0);
-  }
-}
-
 /* Loading sprite animation */
 [data-loading="true"] {
   animation: play 600ms steps(6) infinite;
@@ -33,24 +6,5 @@
 @keyframes play {
   to {
     transform: translateX(-600%);
-  }
-}
-
-/* Fade animations */
-@keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes fade-out {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
   }
 }

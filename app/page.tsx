@@ -4,17 +4,13 @@ import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { startTransition, useEffect, useState, ViewTransition } from "react";
 
 const MIN_LOADING_MS = 1500;
 
 export default function Home() {
-  const [loading, setLoading] = useState(true);
-  const [logoReveal, setLogoReveal] = useState<"in" | "out">("in");
-  const [showNextContent, setShowNextContent] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const [ready, setReady] = useState(false);
 
-  // Wait for fonts + minimum time
   useEffect(() => {
     const start = Date.now();
     let timeoutId: ReturnType<typeof setTimeout>;
@@ -24,71 +20,55 @@ export default function Home() {
       const remaining = Math.max(0, MIN_LOADING_MS - elapsed);
 
       timeoutId = setTimeout(() => {
-        setLoading(false);
-        setLogoReveal("out");
+        startTransition(() => setReady(true));
       }, remaining);
     });
 
     return () => clearTimeout(timeoutId);
   }, []);
 
-  // Wait for unreveal to complete, then show next content
-  useEffect(() => {
-    if (logoReveal !== "out" || !containerRef.current) return;
-
-    Promise.allSettled(
-      containerRef.current
-        .getAnimations({ subtree: true })
-        .map((a) => a.finished),
-    ).then(() => {
-      setShowNextContent(true);
-    });
-  }, [logoReveal]);
-
   return (
     <main className="h-svh overflow-hidden">
-      {/* Loading logo overlay */}
-      <div className="pointer-events-none fixed inset-0 flex items-center justify-center">
-        <div ref={containerRef} data-reveal={logoReveal}>
-          <Logo className="mx-auto max-w-md" loading={loading} />
-        </div>
-      </div>
-
-      {showNextContent && (
-        <>
-          <Image
-            data-reveal="in"
-            className="absolute inset-0 size-full object-contain blur-md xl:object-[75%_50%]"
-            src="/art/sake-and-a-dream.png"
-            alt="Sake and a Dream"
-            width={215}
-            height={288}
-          />
-          <div data-reveal="in" className="grid size-full content-end px-6 pb-12">
-          <div className="space-y-3 p-4">
-            <h1 className="text-6xl leading-none uppercase lg:text-[min(8.5vw,128px)]/[1]">
-              <span className="tracking-tighter">Sake and</span>
-              <br /> a Dream
-            </h1>
-            <p className="text-lg">
-              A creative experiment featuring global artists who share a love
-              for anime, sake, and Bobu.
-            </p>
+      {!ready ? (
+        <ViewTransition>
+          <div className="pointer-events-none fixed inset-0 flex items-center justify-center">
+            <Logo className="mx-auto max-w-md" loading />
           </div>
-          <div className="flex gap-2 px-3">
-            <Button render={<Link href="/gallery" />} nativeButton={false}>
-              View Gallery
-            </Button>
-            <Button
-              render={<Link href="/who-is-bobu" />}
-              variant="link"
-              nativeButton={false}
-            >
-              Who is Bobu?
-            </Button>
+        </ViewTransition>
+      ) : (
+        <ViewTransition>
+          <div className="grid size-full grid-cols-1 grid-rows-5 px-8">
+            <Image
+              className="animate-float col-span-1 row-span-4 aspect-square size-full rotate-3 place-self-stretch object-contain object-[100%_50%] blur-md"
+              src="/art/sake-and-a-dream.png"
+              alt="Sake and a Dream"
+              width={215}
+              height={288}
+            />
+            <div className="col-span-1 row-span-1 space-y-3">
+              <h1 className="text-6xl leading-none uppercase lg:text-[min(8.5vw,128px)]/[1]">
+                <span className="tracking-tighter">Sake and</span>
+                <br /> a Dream
+              </h1>
+              <p className="text-lg">
+                A creative experiment featuring global artists who share a love
+                for anime, sake, and Bobu.
+              </p>
+              <div className="flex gap-2">
+                <Button render={<Link href="/gallery" />} nativeButton={false}>
+                  View Gallery
+                </Button>
+                <Button
+                  render={<Link href="/who-is-bobu" />}
+                  variant="link"
+                  nativeButton={false}
+                >
+                  Who is Bobu?
+                </Button>
+              </div>
+            </div>
           </div>
-        </div>
-        </>
+        </ViewTransition>
       )}
     </main>
   );
