@@ -176,6 +176,15 @@
   overflow: hidden;
 }
 
+@keyframes bgFade {
+  from {
+    background-color: #0a0a0a;
+  }
+  to {
+    background-color: #403e52;
+  }
+}
+
 @utility touch-hitbox {
   position: relative;
   &:before {
