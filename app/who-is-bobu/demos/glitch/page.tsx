@@ -23,7 +23,6 @@ const fragmentShader = /* glsl */ `
   uniform sampler2D uTexture;
   uniform float uTime;
   uniform float uRgbSplit;     // 0 or 1
-  uniform float uSliceDisp;    // 0 or 1
   uniform float uIntensity;    // 0..1
 
   varying vec2 vUv;
@@ -37,23 +36,14 @@ const fragmentShader = /* glsl */ `
     float t = uTime;
     float intensity = uIntensity;
 
-    // --- Horizontal slice displacement ---
-    if (uSliceDisp > 0.5) {
-      float sliceY = floor(uv.y * 20.0) / 20.0;
-      float noise = random(sliceY + floor(t * 8.0));
-      if (noise > 0.6) {
-        float offset = (noise - 0.6) * 2.5 * intensity * 0.15;
-        uv.x += offset * (noise > 0.8 ? -1.0 : 1.0);
-      }
-    }
-
     vec4 color;
 
-    // --- RGB split ---
+    // --- RGB split (frame-by-frame glitch) ---
     if (uRgbSplit > 0.5) {
+      float frame = floor(t * 10.0);
       float split = intensity * 0.02;
-      float dx = sin(t * 3.0) * split;
-      float dy = cos(t * 5.0) * split * 0.5;
+      float dx = (random(frame) - 0.5) * 2.0 * split;
+      float dy = (random(frame + 37.0) - 0.5) * 2.0 * split;
 
       float r = texture2D(uTexture, uv + vec2(dx, dy)).r;
       float g = texture2D(uTexture, uv).g;
@@ -76,16 +66,12 @@ export default function GlitchDemo() {
   const matRef = useRef<ShaderMaterial | null>(null);
 
   const [rgbSplit, setRgbSplit] = useState(false);
-  const [sliceDisp, setSliceDisp] = useState(false);
-  const [intensity, setIntensity] = useState(0.5);
 
   useEffect(() => {
     const m = matRef.current;
     if (!m) return;
     m.uniforms.uRgbSplit.value = rgbSplit ? 1 : 0;
-    m.uniforms.uSliceDisp.value = sliceDisp ? 1 : 0;
-    m.uniforms.uIntensity.value = intensity;
-  }, [rgbSplit, sliceDisp, intensity]);
+  }, [rgbSplit]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -107,8 +93,7 @@ export default function GlitchDemo() {
         uTexture: { value: null },
         uTime: { value: 0 },
         uRgbSplit: { value: 0 },
-        uSliceDisp: { value: 0 },
-        uIntensity: { value: 0.5 },
+        uIntensity: { value: 0.75 },
       },
       transparent: true,
     });
@@ -164,28 +149,10 @@ export default function GlitchDemo() {
     <main className="h-screen">
       <canvas ref={canvasRef} className="pointer-events-none fixed inset-0" />
 
-      <div className="fixed bottom-6 left-1/2 z-50 flex -translate-x-1/2 flex-col items-center gap-3">
-        <div className="flex gap-2">
-          <button onClick={() => setRgbSplit(!rgbSplit)} className={btnClass(rgbSplit)}>
-            RGB Split
-          </button>
-          <button onClick={() => setSliceDisp(!sliceDisp)} className={btnClass(sliceDisp)}>
-            Slice Displacement
-          </button>
-        </div>
-        <div className="flex items-center gap-2 text-xs text-white/60">
-          <span>Intensity</span>
-          <input
-            type="range"
-            min="0"
-            max="1"
-            step="0.01"
-            value={intensity}
-            onChange={(e) => setIntensity(Number(e.target.value))}
-            className="w-32"
-          />
-          <span className="w-8 font-mono">{(intensity * 100).toFixed(0)}%</span>
-        </div>
+      <div className="fixed bottom-6 left-1/2 z-50 -translate-x-1/2">
+        <button onClick={() => setRgbSplit(!rgbSplit)} className={btnClass(rgbSplit)}>
+          RGB Split
+        </button>
       </div>
     </main>
   );

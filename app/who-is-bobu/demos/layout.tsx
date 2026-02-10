@@ -2,10 +2,6 @@ import { Route } from "next";
 import Link from "next/link";
 
 const demos = [
-  { href: "/who-is-bobu/demos/bg", label: "BG" },
-  { href: "/who-is-bobu/demos/scroll", label: "Scroll" },
-  { href: "/who-is-bobu/demos/fireflies", label: "Fireflies" },
-  { href: "/who-is-bobu/demos/svg-frames", label: "SVG Frames" },
   { href: "/who-is-bobu/demos/pixel", label: "Img→Img" },
   { href: "/who-is-bobu/demos/grid", label: "Grid" },
   { href: "/who-is-bobu/demos/lines", label: "Lines" },

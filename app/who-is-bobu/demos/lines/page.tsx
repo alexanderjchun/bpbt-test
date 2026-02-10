@@ -17,8 +17,6 @@ import {
 
 // ── Types ──────────────────────────────────────────────────────────
 interface LineEvent {
-  dir: "v" | "h";
-  pos: number;
   startTime: number;
   drawDuration: number;
   drawOrder: number;
@@ -35,17 +33,30 @@ function texIdx(dir: "v" | "h", level: number, k: number) {
 // ── Timeline builder (spawn-on-finish event simulation) ───────────
 function buildTimeline(
   maxLevel: number,
+  flood: number = 3,
+  jitter: number = 0.3,
 ): { lines: LineEvent[]; totalDrawTime: number } {
   const FPS = 12;
-  const STAGGER = 2; // frames between queue-popped items
+
+  // Seeded pseudo-random for consistent jitter
+  let seed = 42;
+  function rand() {
+    seed = (seed * 1664525 + 1013904223) | 0;
+    return ((seed >>> 0) % 10000) / 10000;
+  }
+
+  let popCount = 0;
+  // Dynamic stagger: starts at 2 frames, decays as more lines pop
+  function currentStagger(): number {
+    if (popCount <= 3) return 2;
+    const t = popCount - 3;
+    const rate = 0.1 + flood * 0.08; // flood 1→0.18, flood 5→0.50
+    return Math.max(0, 2 * Math.exp(-rate * t));
+  }
 
   // Draw duration in frames per level: floor(12 × 0.6^level), min 1
   function durFrames(level: number): number {
     return Math.max(1, Math.floor(12 * Math.pow(0.6, level)));
-  }
-
-  function linePos(level: number, k: number): number {
-    return (2 * k + 1) / (1 << (level + 1));
   }
 
   // Internal scheduled line (frame units)
@@ -83,7 +94,8 @@ function buildTimeline(
 
   function tryQueuePop(now: number) {
     if (blocked || fifo.length === 0 || queuePopPending) return;
-    const t = Math.max(now, lastQueueFrame + STAGGER);
+    const stagger = currentStagger();
+    const t = Math.max(now, lastQueueFrame + stagger);
     pushEv({ frame: t, pri: 1, type: "qpop" });
     queuePopPending = true;
   }
@@ -104,8 +116,12 @@ function buildTimeline(
       queuePopPending = false;
       if (blocked || fifo.length === 0) continue;
       const item = fifo.shift()!;
+      popCount++;
+      // Add jitter for organic feel at higher levels
+      const j = item.level >= 2 ? jitter * (rand() * 2 - 1) * 1.5 : 0;
+      const actualFrame = Math.max(0, ev.frame + j);
       lastQueueFrame = ev.frame;
-      startLine(item.dir, item.level, item.k, ev.frame);
+      startLine(item.dir, item.level, item.k, actualFrame);
       tryQueuePop(ev.frame);
       continue;
     }
@@ -152,8 +168,6 @@ function buildTimeline(
 
   // Convert to seconds, assign draw order
   const lines: LineEvent[] = scheduled.map((s) => ({
-    dir: s.dir,
-    pos: linePos(s.level, s.k),
     startTime: s.startFrame / FPS,
     drawDuration: s.dur / FPS,
     drawOrder: 0,
@@ -187,7 +201,7 @@ const fragmentShader = /* glsl */ `
 
   // Arch glow: parabolic, brightest at center, gentle falloff to ends
   float spatialGlow(float fp, float dp) {
-    float t = fp / max(dp, 0.001);
+    float t = clamp(fp / max(dp, 0.001), 0.0, 1.0);
     return 4.0 * t * (1.0 - t);
   }
 
@@ -300,20 +314,13 @@ export default function LinesDemo() {
 
   const [progress, setProgress] = useState(0);
   const [playing, setPlaying] = useState(false);
-  const [color, setColor] = useState("#85baff");
-  const [glowPeak, setGlowPeak] = useState(2.0);
-  const levels = 5;
 
-  // Rebuild timeline when config changes
-  const timeline = useMemo(
-    () => buildTimeline(levels),
-    [levels],
-  );
+  const timeline = useMemo(() => buildTimeline(5, 1, 1), []);
 
   // Fade config
   const fadeDelay = 0.3;
   const fadeStagger = 0.04;
-  const fadeDuration = 0.4;
+  const fadeDuration = 0.3;
   const fadeStart = timeline.totalDrawTime + fadeDelay;
   const totalTime =
     fadeStart + Math.max(0, timeline.lines.length - 1) * fadeStagger + fadeDuration;
@@ -327,6 +334,7 @@ export default function LinesDemo() {
     d.fill(0);
 
     const settleDuration = 0.6;
+    const glowPeak = 4.0;
 
     for (const line of timeline.lines) {
       const rawDraw = clamp((t - line.startTime) / line.drawDuration, 0, 1);
@@ -336,7 +344,6 @@ export default function LinesDemo() {
       const opacity = 1 - fp;
       const widthScale = 1 - fp;
 
-      // Glow builds during draw, then each line settles individually
       let glowIntensity: number;
       if (rawDraw < 1) {
         glowIntensity = draw * glowPeak;
@@ -353,13 +360,7 @@ export default function LinesDemo() {
       d[i + 3] = glowIntensity;
     }
     dt.needsUpdate = true;
-  }, [progress, timeline, fadeStart, fadeStagger, fadeDuration, totalTime, glowPeak]);
-
-  // ── Sync color ──
-  useEffect(() => {
-    const m = matRef.current;
-    if (m) m.uniforms.uLineColor.value = hexToRgb(color);
-  }, [color]);
+  }, [progress, timeline, fadeStart, fadeStagger, fadeDuration, totalTime]);
 
   // ── Playback ──
   const totalTimeRef = useRef(totalTime);
@@ -463,123 +464,33 @@ export default function LinesDemo() {
     <main className="h-screen">
       <canvas ref={canvasRef} className="pointer-events-none fixed inset-0" />
 
-      {/* Controls */}
-      <div className="fixed bottom-6 left-1/2 z-50 flex -translate-x-1/2 flex-col items-center gap-3">
-        <div className="flex items-center gap-4">
-          <button
-            onClick={() => {
-              if (progress >= 1) setProgress(0);
-              setPlaying((p) => !p);
-            }}
-            className="rounded bg-white/10 px-3 py-1.5 text-xs text-white hover:bg-white/20"
-          >
-            {playing ? "Pause" : progress >= 1 ? "Replay" : "Play"}
-          </button>
+      <div className="fixed bottom-6 left-1/2 z-50 flex -translate-x-1/2 items-center gap-4">
+        <button
+          onClick={() => {
+            if (progress >= 1) setProgress(0);
+            setPlaying((p) => !p);
+          }}
+          className="rounded bg-white/10 px-3 py-1.5 text-xs text-white hover:bg-white/20"
+        >
+          {playing ? "Pause" : progress >= 1 ? "Replay" : "Play"}
+        </button>
 
-          <div className="flex items-center gap-2 text-xs text-white/60">
-            <input
-              type="range"
-              min="0"
-              max="1"
-              step="0.001"
-              value={progress}
-              onChange={(e) => {
-                setPlaying(false);
-                setProgress(Number(e.target.value));
-              }}
-              className="w-48"
-            />
-            <span className="w-8 font-mono">{(progress * 100).toFixed(0)}%</span>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2 text-xs text-white/60">
-            <span>Glow</span>
-            <input
-              type="range"
-              min="0.5"
-              max="4.0"
-              step="0.1"
-              value={glowPeak}
-              onChange={(e) => setGlowPeak(Number(e.target.value))}
-              className="w-32"
-            />
-            <span className="w-8 font-mono">{glowPeak.toFixed(1)}</span>
-          </div>
-
+        <div className="flex items-center gap-2 text-xs text-white/60">
           <input
-            type="color"
-            value={color}
-            onChange={(e) => setColor(e.target.value)}
-            className="h-6 w-6 cursor-pointer rounded border border-white/20 bg-transparent"
+            type="range"
+            min="0"
+            max="1"
+            step="0.001"
+            value={progress}
+            onChange={(e) => {
+              setPlaying(false);
+              setProgress(Number(e.target.value));
+            }}
+            className="w-48"
           />
+          <span className="w-8 font-mono">{(progress * 100).toFixed(0)}%</span>
         </div>
       </div>
-
-      {/* Debug HUD */}
-      {(() => {
-        const t = progress * totalTime;
-        const sorted = [...timeline.lines].sort((a, b) => a.startTime - b.startTime);
-        return (
-          <div className="fixed top-4 left-4 z-50 max-h-[80vh] overflow-y-auto rounded bg-black/80 px-3 py-2 font-mono text-[10px] leading-tight text-white/60">
-            <div className="mb-1 text-white/40">
-              {timeline.lines.length} lines | draw {timeline.totalDrawTime.toFixed(2)}s | total {totalTime.toFixed(2)}s | t={t.toFixed(2)}s
-            </div>
-            {sorted.map((line, i) => {
-              const draw = clamp((t - line.startTime) / line.drawDuration, 0, 1);
-              const fs = fadeStart + line.drawOrder * fadeStagger;
-              const fp = clamp((t - fs) / fadeDuration, 0, 1);
-              const active = draw > 0 && draw < 1;
-              const done = draw >= 1 && fp === 0;
-              const fading = fp > 0 && fp < 1;
-              const gone = fp >= 1;
-
-              // Format position as fraction
-              const num = Math.round(line.pos * 32);
-              const den = 32;
-              // Simplify fraction
-              const gcd = (a: number, b: number): number => b === 0 ? a : gcd(b, a % b);
-              const g = gcd(num, den);
-              const frac = `${num / g}/${den / g}`;
-
-              return (
-                <div
-                  key={`${line.dir}-${line.pos}`}
-                  className={`flex gap-2 ${
-                    active
-                      ? "text-blue-400"
-                      : done
-                        ? "text-white"
-                        : fading
-                          ? "text-white/30"
-                          : gone
-                            ? "text-white/10"
-                            : ""
-                  }`}
-                >
-                  <span className="w-4 text-right text-white/30">{i + 1}</span>
-                  <span className="w-5">{line.dir.toUpperCase()}</span>
-                  <span className="w-10">{frac}</span>
-                  <span className="w-14 text-right">{(line.startTime * 1000).toFixed(0)}ms</span>
-                  <span className="w-14 text-right">{(line.drawDuration * 1000).toFixed(0)}ms</span>
-                  <span className="w-10">
-                    {active
-                      ? `▶ ${(draw * 100).toFixed(0)}%`
-                      : done
-                        ? "done"
-                        : fading
-                          ? `fade ${(fp * 100).toFixed(0)}%`
-                          : gone
-                            ? "—"
-                            : ""}
-                  </span>
-                </div>
-              );
-            })}
-          </div>
-        );
-      })()}
     </main>
   );
 }
