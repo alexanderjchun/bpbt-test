@@ -1,20 +1,22 @@
-"use client";
-
 import Link from "next/link";
 import Image from "next/image";
-import { useParams } from "next/navigation";
+import { notFound } from "next/navigation";
 import { galleryItems } from "../_components/gallery-data";
 
-export default function GalleryDetailPage() {
-  const { slug } = useParams<{ slug: string }>();
+export function generateStaticParams() {
+  return galleryItems.map((item) => ({ slug: item.slug }));
+}
+
+export default async function GalleryDetailPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
   const item = galleryItems.find((g) => g.slug === slug);
 
   if (!item) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-[#EBE8E2]">
-        <p className="text-sm font-light text-black/50">Work not found.</p>
-      </div>
-    );
+    notFound();
   }
 
   return (
